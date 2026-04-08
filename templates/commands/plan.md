@@ -73,9 +73,26 @@ You **MUST** consider the user input before proceeding (if not empty).
    - Phase 1: Update agent context by running the agent script
    - Re-evaluate Constitution Check post-design
 
-4. **Stop and report**: Command ends after Phase 2 planning. Report branch, IMPL_PLAN path, and generated artifacts.
+4. **ADR extraction checkpoint**: After Phase 1 design is complete, check for architectural decisions that should be documented as ADRs:
+   - Review research.md for decisions with rationale and alternatives
+   - Review plan.md Technical Context for technology choices
+   - Review plan.md Constitution Check for compliance decisions
+   - Review data-model.md for storage/entity design decisions
+   - If any ADR-worthy decisions are found, prompt the user:
+     ```
+     ## Architecture Decision Records
 
-5. **Check for extension hooks**: After reporting, check if `.specify/extensions.yml` exists in the project root.
+     The following decisions from this planning phase may warrant ADRs:
+     - [List each decision with a one-line summary]
+
+     To generate ADRs for these decisions, run: `/speckit.adr from-plan`
+     To skip ADR generation, continue to `/speckit.tasks`.
+     ```
+   - If no significant decisions are found, note: "No new ADR-worthy decisions identified in this planning phase."
+
+5. **Stop and report**: Command ends after Phase 2 planning. Report branch, IMPL_PLAN path, and generated artifacts.
+
+6. **Check for extension hooks**: After reporting, check if `.specify/extensions.yml` exists in the project root.
    - If it exists, read it and look for entries under the `hooks.after_plan` key
    - If the YAML cannot be parsed or is invalid, skip hook checking silently and continue normally
    - Filter out hooks where `enabled` is explicitly `false`. Treat hooks without an `enabled` field as enabled by default.
