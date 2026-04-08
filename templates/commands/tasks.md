@@ -65,6 +65,21 @@ You **MUST** consider the user input before proceeding (if not empty).
    - **Optional**: data-model.md (entities), contracts/ (interface contracts), research.md (decisions), quickstart.md (test scenarios)
    - Note: Not all projects have all documents. Generate tasks based on what's available.
 
+   **ADR coverage check**: After loading design documents, scan for undocumented architectural decisions:
+   - Read all ADRs in `docs/adr/` (if directory exists)
+   - Compare against decisions in research.md and plan.md Technical Context
+   - If research.md contains decisions (language, storage, dependencies, deployment choices) that don't have corresponding ADRs, warn:
+     ```
+     ## Undocumented Architectural Decisions
+
+     The following decisions from planning artifacts do not have corresponding ADRs in docs/adr/:
+     - [List each undocumented decision]
+
+     Consider running `/speckit.adr from-plan` before generating tasks.
+     Proceeding with task generation...
+     ```
+   - This is a warning only — do not block task generation.
+
 3. **Execute task generation workflow**:
    - Load plan.md and extract tech stack, libraries, project structure
    - Load spec.md and extract user stories with their priorities (P1, P2, P3, etc.)
